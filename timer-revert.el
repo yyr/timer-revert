@@ -1,8 +1,18 @@
-;;; timer-revert.el
+;;; timer-revert.el --- minor mode revert buffer for a time interval.
 ;; Author: Yagnesh Raghava Yakkala. http://yagnesh.org
 ;; Created: Tuesday, January 20 2015
+;; URL: http://github.com/yyr/timer-revert
+;; Version: 0.1
+;; Keywords: timer, revert, auto revert.
+;;
+;;; Commentary:
+;; This is more like auto revert but with specified time interval
+;; see `timer-revert-delay'
 
-(defcustom  timer-revert-delay 15
+
+;;; Code:
+
+(defcustom timer-revert-delay 15
   "time frequency in seconds to run revert")
 
 (defun timer-revert-buffer ()
