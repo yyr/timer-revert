@@ -17,14 +17,14 @@
 
 (defun timer-revert-buffer ()
   "revert buffer if not modified."
-  (let ((buf timer-revert-buffer))
-    (if (and (buffer-file-name buf)
-             (file-exists-p buf)
+  (with-current-buffer timer-revert-buffer
+    (if (and (buffer-file-name)
+             (file-exists-p (buffer-file-name))
              (buffer-modified-p))
         (progn
           (revert-buffer t t t)
-          (message "%s refreshed buffer" buf))
-      (message "%s file has not changed outside" buf))))
+          (message "%s refreshed buffer" (buffer-name)))
+      (message "%s file has not changed outside" (buffer-name)))))
 
 ;;; debug
 ;; (setq timer-revert-delay 3)
