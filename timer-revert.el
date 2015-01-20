@@ -59,6 +59,8 @@
 
 (defvar-local timer-revert-buffer (current-buffer))
 (defvar-local timer-revert-timer nil)
+
+;;;###autoload
 (define-minor-mode timer-revert-mode
   "revert buffer for every `timer-revert-delay'"
   :group timer-revert
