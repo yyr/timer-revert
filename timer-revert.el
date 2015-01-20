@@ -51,11 +51,13 @@
   (with-current-buffer timer-revert-buffer
     (if (and (buffer-file-name)
              (file-exists-p (buffer-file-name))
-             (buffer-modified-p))
-        (progn
-          (revert-buffer t t t)
-          (message "%s refreshed buffer" (buffer-name)))
-      ;; (message "%s file has not changed outside" (buffer-name))
+             (not (verify-visited-file-modtime (current-buffer))))
+        (if (buffer-modified-p)
+            "buffer modified. not reverting."
+          (progn
+            (revert-buffer t t t)
+            (message "%s refreshed buffer" (buffer-name))))
+      ;;      (message "%s file has not changed outside" (buffer-name))
       )))
 
 ;;; debug
