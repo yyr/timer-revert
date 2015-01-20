@@ -31,9 +31,6 @@
 ;; This is more like `auto-revert-mode` but with a specified time
 ;; interval. see `timer-revert-delay`, defaults to 15 seconds.
 ;;
-;;
-;; Caveats:
-;; - Currently works for only one buffer.
 
 
 ;;; Code:
@@ -42,25 +39,22 @@
   "time frequency in seconds to run revert"
   :group 'timer-revert)
 
-(defvar-local timer-revert-buffer nil)
 (defvar-local timer-revert-timer nil)
 
-
-(defun timer-revert-buffer ()
+(defun timer-revert-buffer (buf)
   "revert buffer if not modified."
-  (let ((buf timer-revert-buffer))
-    (when (bufferp buf)
-      (with-current-buffer buf
-        (if (and (buffer-file-name)
-                 (file-exists-p (buffer-file-name))
-                 (not (verify-visited-file-modtime (current-buffer))))
-            (if (buffer-modified-p)
-                "buffer modified. not reverting."
-              (progn
-                (revert-buffer t t t)
-                (message "%s refreshed buffer" (buffer-name))))
-          ;;      (message "%s file has not changed outside" (buffer-name))
-          )))))
+  (when (bufferp buf)
+    (with-current-buffer buf
+      (if (and (buffer-file-name)
+               (file-exists-p (buffer-file-name))
+               (not (verify-visited-file-modtime (current-buffer))))
+          (if (buffer-modified-p)
+              "buffer modified. not reverting."
+            (progn
+              (revert-buffer t t t)
+              (message "%s refreshed buffer" (buffer-name))))
+        ;;      (message "%s file has not changed outside" (buffer-name))
+        ))))
 
 
 (defun timer-revert-clear-all-timer ()
@@ -74,11 +68,10 @@
   "Clear timer."
   (when timer-revert-timer
     (cancel-timer timer-revert-timer)
-    (setq-local timer-revert-timer nil)
-    ))
+    (setq-local timer-revert-timer nil)))
 
 ;;; debug
-(setq-local timer-revert-delay 7)
+;; (setq-local timer-revert-delay 7)
 ;; (setq timer-revert-timer nil)
 
 ;;;###autoload
@@ -87,14 +80,11 @@
   :init-value nil
   :group 'timer-revert
   (cond (timer-revert-mode
-         (let ((buf (current-buffer)))
-           (set (make-local-variable 'timer-revert-buffer)
-                buf))
          (timer-revert-clear-timer)
          (add-hook 'kill-buffer-hook 'timer-revert-clear-timer nil 'local)
          (setq-local timer-revert-timer
-                     (run-at-time t timer-revert-delay
-                                  'timer-revert-buffer)))
+                     (apply 'run-at-time t timer-revert-delay
+                            'timer-revert-buffer (list  (current-buffer)))))
         (t
          (timer-revert-clear-timer)
          (remove-hook 'kill-buffer-hook 'timer-revert-clear-timer 'local))))
