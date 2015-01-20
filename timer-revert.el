@@ -60,6 +60,18 @@
       ;;      (message "%s file has not changed outside" (buffer-name))
       )))
 
+(defun timer-revert-clear-all-timer ()
+  "Clear timer."
+  (when timer-revert-timer
+    (cancel-function-timers timer-revert-buffer)
+    (setq timer-revert-timer nil)))
+
+(defun timer-revert-clear-timer ()
+  "Clear timer."
+  (when timer-revert-timer
+    (cancel-timer timer-revert-timer)
+    (setq timer-revert-timer nil)))
+
 ;;; debug
 ;; (setq timer-revert-delay 3)
 ;; (setq timer-revert-timer nil)
@@ -67,16 +79,20 @@
 ;;;###autoload
 (define-minor-mode timer-revert-mode
   "revert buffer for every `timer-revert-delay'"
-  :group timer-revert
   :init-value nil
-  (and timer-revert-timer (cancel-timer timer-revert-timer))
-  (if timer-revert-mode
-      (progn
-        (setq timer-revert-timer
-              (run-at-time t timer-revert-delay
-                           'timer-revert-buffer)))
-    (and timer-revert-timer
-         (cancel-timer  timer-revert-timer))))
+  :group 'timer-revert
+  (cond (timer-revert-mode
+         (timer-revert-clear-timer)
+         (add-hook 'kill-buffer-hook 'timer-revert-clear-timer nil 'local)
+         (setq timer-revert-timer
+               (run-at-time t timer-revert-delay
+                            'timer-revert-buffer)))
+        (t
+         (timer-revert-clear-timer)
+         (remove-hook 'kill-buffer-hook 'timer-revert-clear-timer 'local)
+         (setq timer-revert-timer
+               (run-at-time t timer-revert-delay
+                            'timer-revert-buffer)))))
 
 (provide 'timer-revert)
 ;;; timer-revert.el ends here
