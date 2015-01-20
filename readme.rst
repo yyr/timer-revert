@@ -6,8 +6,4 @@ This is more like `auto-revert-mode` but with a specified time interval. see
 `timer-revert-delay`, defaults to 15 seconds.
 
 
-Caveats:
-- Currently works for only one buffer.
-
-
 License: GPL v3 or later
