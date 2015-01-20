@@ -61,16 +61,17 @@
       )))
 
 (defun timer-revert-clear-all-timer ()
+  (interactive)
   "Clear timer."
-  (when timer-revert-timer
-    (cancel-function-timers timer-revert-buffer)
-    (setq timer-revert-timer nil)))
+  (cancel-function-timers timer-revert-buffer)
+  (setq-local timer-revert-timer nil)
+  (setq timer-revert-timer nil))
 
 (defun timer-revert-clear-timer ()
   "Clear timer."
   (when timer-revert-timer
     (cancel-timer timer-revert-timer)
-    (setq timer-revert-timer nil)))
+    (setq-local timer-revert-timer nil)))
 
 ;;; debug
 ;; (setq timer-revert-delay 3)
@@ -84,15 +85,12 @@
   (cond (timer-revert-mode
          (timer-revert-clear-timer)
          (add-hook 'kill-buffer-hook 'timer-revert-clear-timer nil 'local)
-         (setq timer-revert-timer
+         (setq-local timer-revert-timer
                (run-at-time t timer-revert-delay
                             'timer-revert-buffer)))
         (t
          (timer-revert-clear-timer)
-         (remove-hook 'kill-buffer-hook 'timer-revert-clear-timer 'local)
-         (setq timer-revert-timer
-               (run-at-time t timer-revert-delay
-                            'timer-revert-buffer)))))
+         (remove-hook 'kill-buffer-hook 'timer-revert-clear-timer 'local))))
 
 (provide 'timer-revert)
 ;;; timer-revert.el ends here
