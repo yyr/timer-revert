@@ -1,13 +1,19 @@
-;;; timer-revert.el --- minor mode revert buffer for a time interval.
+;;; timer-revert.el --- minor mode to revert buffer for a given time interval.
 ;; Author: Yagnesh Raghava Yakkala. http://yagnesh.org
 ;; Created: Tuesday, January 20 2015
 ;; URL: http://github.com/yyr/timer-revert
 ;; Version: 0.1
-;; Keywords: timer, revert, auto revert.
+;; Keywords: timer, revert, auto-revert.
 ;;
 ;;; Commentary:
-;; This is more like auto revert but with specified time interval
-;; see `timer-revert-delay'
+;; A minor mode to revert buffer for a given time interval.
+;;
+;; This is more like `auto-revert-mode` but with a specified time
+;; interval. see `timer-revert-delay`, defaults to 15 seconds.
+;;
+;;
+;; Caveats:
+;; - Currently works for only one buffer.
 
 
 ;;; Code:

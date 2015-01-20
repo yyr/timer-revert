@@ -1,5 +1,10 @@
 timer-revert
 -----------
+A minor mode to revert buffer for a given time interval.
 
-This is more like auto revert but with specified time interval
-see `timer-revert-delay'
+This is more like `auto-revert-mode` but with a specified time interval. see
+`timer-revert-delay`, defaults to 15 seconds.
+
+
+Caveats:
+- Currently works for only one buffer.
