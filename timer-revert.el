@@ -39,7 +39,12 @@
 ;;; Code:
 
 (defcustom timer-revert-delay 15
-  "time frequency in seconds to run revert")
+  "time frequency in seconds to run revert"
+  :group 'timer-revert)
+
+(defvar-local timer-revert-buffer (current-buffer))
+(defvar-local timer-revert-timer nil)
+
 
 (defun timer-revert-buffer ()
   "revert buffer if not modified."
@@ -56,9 +61,6 @@
 ;;; debug
 ;; (setq timer-revert-delay 3)
 ;; (setq timer-revert-timer nil)
-
-(defvar-local timer-revert-buffer (current-buffer))
-(defvar-local timer-revert-timer nil)
 
 ;;;###autoload
 (define-minor-mode timer-revert-mode
