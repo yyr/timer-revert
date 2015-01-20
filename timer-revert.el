@@ -9,8 +9,8 @@
   "revert buffer if not modified."
   (let ((buf (buffer-name)))
     (if (and (buffer-file-name)
-               (file-exists-p (buffer-file-name))
-               (not (buffer-modified-p)))
+             (file-exists-p (buffer-file-name))
+             (buffer-modified-p))
         (progn
           (revert-buffer t t t)
           (message "Refreshed buffer"))
@@ -26,8 +26,8 @@
   (if timer-revert
       (progn
         (setq timer-revert-timer
-         (run-at-time t timer-revert-delay
-                      'timer-revert-buffer)))
+              (run-at-time t timer-revert-delay
+                           'timer-revert-buffer)))
     (and timer-revert-timer
          (cancel-timer timer-revert-timer))))
 
