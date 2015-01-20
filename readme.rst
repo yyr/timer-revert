@@ -8,3 +8,6 @@ This is more like `auto-revert-mode` but with a specified time interval. see
 
 Caveats:
 - Currently works for only one buffer.
+
+
+License: GPL v3 or later
