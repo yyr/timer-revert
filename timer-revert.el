@@ -18,11 +18,10 @@
 
 
 (defvar timer-revert-timer nil)
-
 (define-minor-mode timer-revert
   "revert time for ever `timer-revert-delay'"
-  :global nil
   :group timer-revert
+  :init-value nil
   (if timer-revert
       (progn
         (setq timer-revert-timer
