@@ -24,7 +24,8 @@
         (progn
           (revert-buffer t t t)
           (message "%s refreshed buffer" (buffer-name)))
-      (message "%s file has not changed outside" (buffer-name)))))
+      ;; (message "%s file has not changed outside" (buffer-name))
+      )))
 
 ;;; debug
 ;; (setq timer-revert-delay 3)
