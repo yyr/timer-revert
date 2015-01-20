@@ -26,11 +26,13 @@
           (message "Refreshed buffer"))
       (message "file has not changed"))))
 
+;; (setq timer-revert-timer 3)
 (defvar timer-revert-timer nil)
 (define-minor-mode timer-revert
   "revert buffer for every `timer-revert-delay'"
   :group timer-revert
   :init-value nil
+  (and timer-revert-timer (cancel-timer timer-revert-timer))
   (if timer-revert
       (progn
         (setq timer-revert-timer
