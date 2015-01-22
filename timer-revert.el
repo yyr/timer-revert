@@ -29,29 +29,29 @@
 ;; A minor mode to revert buffer for a given time interval.
 ;;
 ;; This is more like `auto-revert-mode' but with a specified time
-;; interval. see `timer-revert-delay', defaults to 15 seconds.  This is useful
-;; because emacs' auto-revert-mode doesn't have a facility to tell the
+;; interval.  see `timer-revert-delay', defaults to 15 seconds.  This is useful
+;; because Emacs' auto-revert-mode doesn't have a facility to tell the
 ;; frequency.
 
 ;; My use case is while writing latex documents, background running make needs
-;; some time to finish, usually 5 to 10 seconds. unlike `auto-revert-mode'
+;; some time to finish, usually 5 to 10 seconds.  unlike `auto-revert-mode'
 ;; which is very eager to load the file as soon as its modified outside, this
-;; one lazily waits for 15 seconds. For best experience, if the background
+;; one lazily waits for 15 seconds.  For best experience, if the background
 ;; process takes 5 seconds then `timer-revert-delay' should be around 10
-;; seconds. Okay the logic is not perfect though but minimizes conflicts.
+;; seconds.  Okay the logic is not perfect though but minimizes conflicts.
 
 
 ;;; Code:
 
 (defcustom timer-revert-delay 15
-  "time frequency in seconds to run revert"
+  "Time frequency in seconds to run revert."
   :group 'timer-revert)
 
 (defvar-local timer-revert-timer nil)
 
 (defun timer-revert-buffer (buf)
-  "revert a buffer file if it is modified outside of emacs but
-only when the buffer is not modified."
+  "Revert a buffer file of BUF if it is modified outside of Emacs.
+But do it only when the buffer is not modified."
   (when (bufferp buf)
     (with-current-buffer buf
       (if (and (buffer-file-name)
@@ -67,8 +67,8 @@ only when the buffer is not modified."
 
 
 (defun timer-revert-clear-all-timer ()
+  "Clear timers from the timer-revert."
   (interactive)
-  "Clear timer."
   (cancel-function-timers #'timer-revert-buffer)
   (setq-local timer-revert-timer nil))
 
