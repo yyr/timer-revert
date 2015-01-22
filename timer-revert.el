@@ -85,7 +85,7 @@ But do it only when the buffer is not modified."
 
 ;;;###autoload
 (define-minor-mode timer-revert-mode
-  "revert buffer for every `timer-revert-delay'"
+  "Revert buffer for every `timer-revert-delay'."
   :init-value nil
   :group 'timer-revert
   (cond (timer-revert-mode
