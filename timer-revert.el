@@ -42,12 +42,15 @@
 
 
 ;;; Code:
+(defgroup timer-revert nil
+  "timer-revert customizations."
+  :group 'processes)
 
 (defcustom timer-revert-delay 15
   "Time frequency in seconds to run revert."
   :group 'timer-revert)
 
-(defvar-local timer-revert-timer nil)
+(defvar timer-revert-timer nil)
 
 (defun timer-revert-buffer (buf)
   "Revert a buffer file of BUF if it is modified outside of Emacs.
@@ -70,17 +73,17 @@ But do it only when the buffer is not modified."
   "Clear timers from the timer-revert."
   (interactive)
   (cancel-function-timers #'timer-revert-buffer)
-  (setq-local timer-revert-timer nil))
+  (setq timer-revert-timer nil))
 
 
 (defun timer-revert-clear-timer ()
   "Clear timer."
   (when timer-revert-timer
     (cancel-timer timer-revert-timer)
-    (setq-local timer-revert-timer nil)))
+    (setq timer-revert-timer nil)))
 
 ;;; debug
-;; (setq-local timer-revert-delay 7)
+;; (setq timer-revert-delay 7)
 ;; (setq timer-revert-timer nil)
 
 ;;;###autoload
@@ -88,12 +91,14 @@ But do it only when the buffer is not modified."
   "Revert buffer for every `timer-revert-delay'."
   :init-value nil
   :group 'timer-revert
+  (make-local-variable 'timer-revert-timer)
+  (make-local-variable 'timer-revert-delay)
   (cond (timer-revert-mode
          (timer-revert-clear-timer)
          (add-hook 'kill-buffer-hook 'timer-revert-clear-timer nil 'local)
-         (setq-local timer-revert-timer
-                     (apply 'run-at-time t timer-revert-delay
-                            'timer-revert-buffer (list  (current-buffer)))))
+         (setq timer-revert-timer
+               (apply 'run-at-time t timer-revert-delay
+                      'timer-revert-buffer (list  (current-buffer)))))
         (t
          (timer-revert-clear-timer)
          (remove-hook 'kill-buffer-hook 'timer-revert-clear-timer 'local))))
